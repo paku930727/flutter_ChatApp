@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yummy_chat/config/palette.dart';
-import 'package:yummy_chat/screens/main_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginSignupScreen extends StatefulWidget {
   const LoginSignupScreen({Key? key}) : super(key: key);
@@ -10,6 +10,8 @@ class LoginSignupScreen extends StatefulWidget {
 }
 
 class _LoginSignupScreenState extends State<LoginSignupScreen> {
+  final _authentication = FirebaseAuth.instance;
+  
   bool isSignupScreen = true;
   final _formkey = GlobalKey<FormState>();
   String userName = '';
@@ -186,6 +188,9 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                 onSaved:(value){
                                   userName = value!;
                                 },
+                                onChanged: (value){
+                                  userName = value;
+                                },
                                 decoration: InputDecoration(
                                     prefixIcon: Icon(
                                       Icons.account_circle,
@@ -214,6 +219,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                 height: 8,
                               ),
                               TextFormField(
+                                keyboardType: TextInputType.emailAddress,
                                 key:ValueKey(2),
                                 validator: (value){
                                 if(value!.isEmpty || !value.contains('@')){
@@ -252,6 +258,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                 height: 8,
                               ),
                               TextFormField(
+                                obscureText: true,
                                 key:ValueKey(3),
                                 validator: (value){
                                   if(value!.isEmpty || value.length < 6){
@@ -260,6 +267,9 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                                   return null;
                                 },
                                 onSaved:(value){
+                                  userPassword = value!;
+                                },
+                                onChanged:(value){
                                   userPassword = value!;
                                 },
                                 decoration: InputDecoration(
@@ -397,6 +407,9 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
                   child: GestureDetector(
                     onTap: (){
                       _tryValidation();
+                      print(userName);
+                      print(userEmail);
+                      print(userPassword);
                     },
                     child: Container(
                       decoration: BoxDecoration(
